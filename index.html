@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>
+   Amity LLM
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet"/>
+  <style>
+   body {
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .search-container {
+            transition: all 0.3s ease-in-out;
+        }
+        .search-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .history-box {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background-color: #3d3d3d;
+            border: 1px solid gray;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+  </style>
+ </head>
+ <body class="bg-[#1c1c1c] text-white h-screen flex flex-col items-center justify-center p-6">
+  <div class="absolute top-4 left-4 text-xl font-semibold text-white">
+   Amity LLM
+  </div>
+  <button class="absolute top-4 right-4 bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-full transition-all" id="historyButton">
+   History
+  </button>
+  <div id="historyBox" class="history-box">
+  </div>
+  <div class="w-full max-w-2xl flex items-center bg-[#3d3d3d] rounded-full px-4 py-3 shadow-lg border border-gray-700 search-container">
+   <input type="file" id="fileInput" class="hidden"/>
+   <button id="fileButton" class="text-white bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-full mr-2">
+       <i class="fas fa-file-upload"></i>
+   </button>
+   <input class="bg-transparent flex-grow text-white placeholder-gray-400 focus:outline-none text-lg px-2" id="chatInput" placeholder="What is your query?" type="text"/>
+   <button class="text-white bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-full ml-4 transition-all" id="sendButton">
+    <i class="fas fa-paper-plane">
+    </i>
+   </button>
+  </div>
+  <script>
+   let searchHistory = [];
+
+   document.getElementById('sendButton').addEventListener('click', function() {
+            sendMessage();
+        });
+
+   document.getElementById('chatInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+   document.getElementById('historyButton').addEventListener('click', function() {
+            let historyBox = document.getElementById('historyBox');
+            historyBox.style.display = historyBox.style.display === 'none' || historyBox.style.display === '' ? 'block' : 'none';
+        });
+
+   document.getElementById('fileButton').addEventListener('click', function() {
+        document.getElementById('fileInput').click();
+   });
+
+   document.getElementById('fileInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            console.log("File selected:", file.name);
+            alert("File uploaded: " + file.name);
+        }
+   });
+
+   function sendMessage() {
+        const chatInput = document.getElementById('chatInput');
+        const userMessage = chatInput.value.trim();
+        if (userMessage) {
+            searchHistory.push(userMessage);
+            updateHistory();
+            chatInput.value = '';
+        }
+    }
+
+   function updateHistory() {
+        const historyBox = document.getElementById('historyBox');
+        historyBox.innerHTML = '';
+        searchHistory.forEach(query => {
+            const historyItem = document.createElement('div');
+            historyItem.className = 'p-2 border-b border-gray-600 text-white';
+            historyItem.textContent = query;
+            historyBox.appendChild(historyItem);
+        });
+    }
+  </script>
+ </body>
+</html>
