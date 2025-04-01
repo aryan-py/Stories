@@ -64,5 +64,8 @@ Ensure you have an OpenAI API key for embedding generation and GPT-4o response g
 This project is licensed under the MIT License.
 
 ## Contributors
-- **[Your Name]** - Lead Developer
+Aryan Tomar
+Anshumaan Singh
+Naman Sharma
+
 
